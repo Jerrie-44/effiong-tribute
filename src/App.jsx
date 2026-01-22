@@ -6,7 +6,6 @@ import backgroundTexture from './assets/images/paper-texture.png';
 export default function App() {
   const form = useRef(); 
   
-  // 1. FIXED: State now explicitly uses 'from_name' to match the input
   const [formData, setFormData] = useState({ 
     from_name: '', 
     relationship: '', 
@@ -29,7 +28,7 @@ export default function App() {
     setIsSending(true);
     setError(null);
 
-    // 2. FIXED: Your actual EmailJS keys are plugged in here
+    // Your actual EmailJS keys
     const YOUR_SERVICE_ID = "service_hcrnijm";
     const YOUR_TEMPLATE_ID = "template_raeu39l";
     const YOUR_PUBLIC_KEY = "1DtOx2QwSGzv5tHgp";
@@ -43,16 +42,12 @@ export default function App() {
       )
       .then(
         () => {
-          // Success!
           setSubmitted(true);
           setIsSending(false);
           setFormData({ from_name: '', relationship: '', message: '' });
-          
-          // Reset the success message after 5 seconds
           setTimeout(() => setSubmitted(false), 5000);
         },
         (error) => {
-          // Failed
           console.error('FAILED...', error.text);
           setError("Something went wrong. Please try again.");
           setIsSending(false);
@@ -74,22 +69,31 @@ export default function App() {
         <p className="italic font-serif text-xl mb-8 text-tribute-olive/80">In loving memory of</p>
         
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-10 w-full">
+          {/* UPDATED DATE (Desktop) */}
           <span className="font-serif text-xl tracking-wide hidden md:block">July 20, 1959</span>
+          
           <div className="w-56 h-56 rounded-full overflow-hidden border-4 border-white shadow-xl grayscale">
-            <img src={profileImage} alt="Effiong Asuquo Bassey" className="w-full h-full object-cover" />
+            <img src={profileImage} alt="Bassey Effiong Asuquo" className="w-full h-full object-cover" />
           </div>
-          <span className="font-serif text-xl tracking-wide hidden md:block">October 28, 2025</span>
+
+          {/* UPDATED DATE (Desktop) */}
+          <span className="font-serif text-xl tracking-wide hidden md:block">October 25, 2025</span>
         </div>
 
+        {/* UPDATED DATE (Mobile) */}
         <div className="md:hidden flex justify-center gap-8 text-sm font-serif mb-8 w-full">
-            <span>July 20, 1959</span><span>-</span><span>Oct 28, 2025</span>
+            <span>July 20, 1959</span>
+            <span>-</span>
+            <span>Oct 25, 2025</span>
         </div>
 
-        <h1 className="text-4xl md:text-6xl font-serif tracking-wide mb-2">EFFIONG, ASUQUO</h1>
-        <h2 className="text-4xl md:text-6xl font-serif tracking-wide mb-12">BASSEY</h2>
+        {/* UPDATED NAME */}
+        <h1 className="text-4xl md:text-6xl font-serif tracking-wide mb-2">BASSEY EFFIONG,</h1>
+        <h2 className="text-4xl md:text-6xl font-serif tracking-wide mb-12">ASUQUO</h2>
+
         <p className="text-lg mb-12 max-w-lg leading-relaxed">Leave a tribute to celebrate his life and legacy</p>
 
-        {/* --- FUNCTIONAL FORM --- */}
+        {/* --- FORM SECTION --- */}
         {submitted ? (
           <div className="bg-tribute-sage text-white p-8 rounded-lg shadow-lg animate-fade-in">
             <h3 className="text-2xl font-serif mb-2">Thank you</h3>
@@ -106,7 +110,6 @@ export default function App() {
                 <input 
                   type="text" 
                   name="from_name"  
-                  // 3. FIXED: Added fallback (|| '') to prevent crash if state is undefined
                   value={formData.from_name || ''}
                   onChange={handleChange}
                   required
